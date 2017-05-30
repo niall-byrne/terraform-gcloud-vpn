@@ -1,0 +1,9 @@
+# Created by .ignore support plugin (hsz.mobi)
+*~
+.DS_Store
+.idea
+venv
+
+terraform.tfstate
+terraform.tfstate.backup
+.terraform.tfstate.lock.info
