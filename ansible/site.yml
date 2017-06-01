@@ -1,0 +1,6 @@
+---
+- hosts: all
+  remote_user: ec2-user
+  roles:
+    - { role: "ansible-roles/root-to-sudo" }
+    #- { role: "ansible-roles/vpn-server" }

@@ -36,9 +36,9 @@ resource "google_compute_instance" "vpn-server" {
     ssh-keys = "root:${file("${var.public_key_path}")}"
   }
 
-  provisioner "file" {
-    source      = "${var.install_script_src_path}"
-    destination = "${var.install_script_dest_path}"
+  provisioner "local-exec" {
+    command     = "ansible/playbook.sh ${var.private_key_path} ${google_compute_address.vpn-address.address}"
+    on_failure  = "fail"
 
     connection {
       type        = "ssh"
@@ -61,4 +61,8 @@ resource "google_compute_firewall" "default" {
 
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["vpn-server"]
+}
+
+output "ip" {
+  value = "${google_compute_address.vpn-address.address}"
 }
