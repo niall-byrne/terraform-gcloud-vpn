@@ -4,6 +4,7 @@
 .idea
 venv
 
+ansible/roles
 terraform.tfstate
 terraform.tfstate.backup
 .terraform.tfstate.lock.info

@@ -37,7 +37,7 @@ resource "google_compute_instance" "vpn-server" {
   }
 
   provisioner "local-exec" {
-    command     = "ansible/playbook.sh ${var.private_key_path} ${google_compute_address.vpn-address.address}"
+    command     = "cd ansible && ./playbook.sh ${var.private_key_path} ${google_compute_address.vpn-address.address}"
     on_failure  = "fail"
 
     connection {

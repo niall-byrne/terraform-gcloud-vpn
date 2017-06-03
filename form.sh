@@ -87,14 +87,14 @@ function valid_ip()
 # Parse Arguments
 [[ -z $1 ]] && help1
 [[ -z $ID ]] && help2
-[[ $ID == "mindful-audio-169214" ]] && help2
+#[[ $ID == "mindful-audio-169214" ]] && help2
 [[ -z $GBINARY ]] && help3
 [[ -z $TBINARY ]] && help3
 
 # Set the project ID
 gcloud config set project "$ID"
 
-case ${$1} in
+case ${1} in
 *auth*)
     auth
     ;;
@@ -103,7 +103,7 @@ case ${$1} in
     create
     if valid_ip $ip; then echo "Your VPN server is ready with ip address: $ip"; fi
     ;;
-*create*)
+*destroy*)
     auth
     destroy
     ;;

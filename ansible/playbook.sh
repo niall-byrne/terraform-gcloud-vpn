@@ -18,7 +18,9 @@
 KEY=$1
 IP=$2
 SSH_AS=root
-export INSTALL_USER="cat /dev/urandom | tr -dc 'a-f0-9' | fold -w 10 | head -n 1"
+
+# Create Random SSH User to complete install, and disable ssh afterwards
+export INSTALL_USER=$(cat /dev/urandom | LC_CTYPE=C tr -dc 'a-f0-9' | fold -w 10 | head -n 1)
 
 # ------------------------------------------------------------
 # Functions
@@ -31,19 +33,25 @@ help() {
 }
 
 create_inventory() {
-    echo "[ all ]" > inventory
-    echo "${IP} ansible_ssh_private_key_file=${KEY} ansible_user=${SSH_AS}" >> inventory
+    echo "${IP} ansible_ssh_private_key_file=${KEY} ansible_user=${SSH_AS}" > inventory
 }
 
 execute() {
-    ansible-galaxy install -r requirements.yml -p roles --force
-    ansible-playbook -c ssh -i inventory site.yml
+    rm -rf roles
+    ansible-galaxy install -p roles -f -r requirements.yml
+    ansible-playbook -c ssh -i inventory site-01.yml
+    echo "${IP} ansible_ssh_private_key_file=${KEY} ansible_user=${INSTALL_USER}" > inventory
+    ansible-playbook -c ssh -i inventory site-02.yml
 }
 
 wait_for_ssh() {
     echo "Waiting for remote SSHD service to respond ..."
     while true; do
-        ssh ${SSH_AS}@${IP} -i ${KEY} "echo 'connected!' " && break
+        ssh -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            ${SSH_AS}@${IP} -i ${KEY} \
+            "echo 'connected!' " \
+            && break
         sleep 1
     done
     echo "Ready for Ansible!"
