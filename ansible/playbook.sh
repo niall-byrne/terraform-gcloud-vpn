@@ -22,6 +22,9 @@ SSH_AS=root
 # Create Random SSH User to complete install, and disable ssh afterwards
 export INSTALL_USER=$(cat /dev/urandom | LC_CTYPE=C tr -dc 'a-f0-9' | fold -w 10 | head -n 1)
 
+# It's a brand new server so let's skip this validation feature
+export ANSIBLE_HOST_KEY_CHECKING=False
+
 # ------------------------------------------------------------
 # Functions
 # ------------------------------------------------------------
