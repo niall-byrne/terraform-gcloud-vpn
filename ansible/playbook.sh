@@ -68,3 +68,5 @@ wait_for_ssh() {
 wait_for_ssh
 create_inventory
 execute
+
+rm inventory
