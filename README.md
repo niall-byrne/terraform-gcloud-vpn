@@ -2,7 +2,7 @@ terraform-gcloud-vpn
 ====================
 
 Leverage Google Cloud to create a personal VPN server and client side configuration all in one step.<br>
-The instructions primarily target folks using OSX, but can be adapted for Windows or Linux users.
+The code has been primarily used on OSX, but can be adapted for Windows or Linux users.
 
 ## Dependencies
 
