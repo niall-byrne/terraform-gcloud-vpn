@@ -22,6 +22,15 @@ SSH_AS=root
 # Create Random SSH User to complete install, and disable ssh afterwards
 export INSTALL_USER=$(cat /dev/urandom | LC_CTYPE=C tr -dc 'a-f0-9' | fold -w 10 | head -n 1)
 
+# Export the IP Address to make it available to the ansible playbooks
+export SERVER_ADDRESS="${IP}"
+
+# Export the local folder name to make it available to the ansible playbooks
+cd ..
+mkdir -p configurations
+export LOCAL_STORAGE="$(pwd)/configurations"
+cd -
+
 # It's a brand new server so let's skip this validation feature
 export ANSIBLE_HOST_KEY_CHECKING=False
 
@@ -40,8 +49,8 @@ create_inventory() {
 }
 
 execute() {
-    rm -rf roles
-    ansible-galaxy install -p roles -f -r requirements.yml
+    #rm -rf roles
+    #ansible-galaxy install -p roles -f -r requirements.yml
     ansible-playbook -c ssh -i inventory site-01.yml
     echo "${IP} ansible_ssh_private_key_file=${KEY} ansible_user=${INSTALL_USER}" > inventory
     ansible-playbook -c ssh -i inventory site-02.yml
