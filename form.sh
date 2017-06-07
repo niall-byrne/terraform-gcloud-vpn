@@ -59,29 +59,13 @@ auth() {
 }
 
 create() {
+    rm -rf configuration
     terraform apply -var-file=config/config.tfvars terraform
     IP=$(terraform output ip)
 }
 
 destroy() {
     terraform destroy -var-file=config/config.tfvars terraform
-}
-
-function valid_ip()
-{
-    local  test=$1
-    local  stat=1
-
-    if [[ $test =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-        OIFS=$IFS
-        IFS='.'
-        test=($test)
-        IFS=$OIFS
-        [[ ${test[0]} -le 255 && ${test[1]} -le 255 \
-            && ${test[2]} -le 255 && ${test[3]} -le 255 ]]
-        stat=$?
-    fi
-    return $stat
 }
 
 # Parse Arguments
@@ -101,7 +85,12 @@ case ${1} in
 *create*)
     auth
     create
-    if valid_ip $ip; then echo "Your VPN server is ready with ip address: $ip"; fi
+    if [[ -e configurations/client1.ovpn ]]; then
+        echo "Configuration files were downloaded successfully, you are ready to setup your client!"
+    else
+        echo "Configuration files were not generated, please recheck your config settings and try again!"
+        echo "(To start over first run './form.sh destroy' to delete any resources that were created.)".
+    fi
     ;;
 *destroy*)
     auth

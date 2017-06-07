@@ -49,8 +49,8 @@ create_inventory() {
 }
 
 execute() {
-    #rm -rf roles
-    #ansible-galaxy install -p roles -f -r requirements.yml
+    rm -rf roles
+    ansible-galaxy install -p roles -f -r requirements.yml
     ansible-playbook -c ssh -i inventory site-01.yml
     echo "${IP} ansible_ssh_private_key_file=${KEY} ansible_user=${INSTALL_USER}" > inventory
     ansible-playbook -c ssh -i inventory site-02.yml
@@ -79,3 +79,4 @@ create_inventory
 execute
 
 rm inventory
+
