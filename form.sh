@@ -97,6 +97,8 @@ case ${1} in
     destroy
     ;;
 *)
+    help1
+    echo ""
     echo "Unknown command '$1' ..."
     echo ""
     exit 2
