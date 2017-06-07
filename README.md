@@ -4,12 +4,12 @@ terraform-gcloud-vpn
 Leverage Google Cloud to create a personal VPN server and client side configuration all in one step.<br>
 The instructions primarily target folks using OSX, but can be adapted for Windows or Linux users.
 
-##Dependencies
+## Dependencies
 
 You'll need to install [Terraform](https://www.terraform.io/) and the [gcloud](https://cloud.google.com/sdk/) cli tool.
 
 
-##Configuration
+## Configuration
 
 Generate a new set of public and private ssh keys to use with your server:
 ```
@@ -28,7 +28,7 @@ Enter the filename of the ssh public key, and the project values into the config
 ```
 
 
-##Create a VPN Server
+## Create a VPN Server
 
 Once you have configured the settings, you can provision a server:
 ```
@@ -42,7 +42,7 @@ If you're on a mac, download [tunnelblick](https://tunnelblick.net/) and import 
 There are similar tools for Windows/Linux based computers.
 
 
-##Delete your VPN Server
+## Delete your VPN Server
 
 If you're finished with your VPN server, simply run the following command:
 ```
