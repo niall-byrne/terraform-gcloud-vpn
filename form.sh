@@ -71,7 +71,7 @@ destroy() {
 # Parse Arguments
 [[ -z $1 ]] && help1
 [[ -z $ID ]] && help2
-#[[ $ID == "mindful-audio-169214" ]] && help2
+[[ $ID == "mindful-audio-169214" ]] && help2
 [[ -z $GBINARY ]] && help3
 [[ -z $TBINARY ]] && help3
 
