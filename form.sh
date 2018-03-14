@@ -22,6 +22,8 @@ GBINARY=$(which gcloud)
 TBINARY=$(which terraform)
 IP="Unknown"
 
+echo $ID
+
 # ------------------------------------------------------------
 # Functions
 # ------------------------------------------------------------
@@ -55,7 +57,7 @@ help3() {
 auth() {
     gcloud auth application-default login
     gcloud service-management enable cloudapis.googleapis.com
-    gcloud service-management enable compute-component.googleapis.com
+    gcloud service-management enable compute.googleapis.com
 }
 
 create() {
@@ -71,7 +73,6 @@ destroy() {
 # Parse Arguments
 [[ -z $1 ]] && help1
 [[ -z $ID ]] && help2
-#[[ $ID == "mindful-audio-169214" ]] && help2
 [[ -z $GBINARY ]] && help3
 [[ -z $TBINARY ]] && help3
 
