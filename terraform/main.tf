@@ -1,6 +1,7 @@
 provider "google" {
   region      = "${var.region}"
   project     = "${var.project_id}"
+  version     = "2.12.0"
 }
 
 resource "google_compute_address" "vpn-address" {
@@ -19,10 +20,12 @@ resource "google_compute_instance" "vpn-server" {
   tags            = ["vpn-server"]
   can_ip_forward  = true
 
-  disk {
-    image = "ubuntu-os-cloud/ubuntu-1604-xenial-v20170516"
+  boot_disk {
+    initialize_params {
+      image = "ubuntu-os-cloud/ubuntu-1604-xenial-v20170516"
+      size = 10
+    }
     auto_delete = true
-    size = 10
   }
 
   network_interface {

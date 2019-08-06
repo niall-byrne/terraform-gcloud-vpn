@@ -18,8 +18,9 @@
 
 ID=$(cat config/config.tfvars | grep project_id | cut -d= -f2 | sed 's/"//g' | cut -d' ' -f2)
 KEY=$(cat config/config.tfvars | grep private_key_path | cut -d= -f2 | sed 's/"//g' | cut -d' ' -f2)
-GBINARY=$(which gcloud)
-TBINARY=$(which terraform)
+GBINARY=$(command -v gcloud)
+GBINARY_VERSION=$(gcloud version | grep 246.0.0)
+TBINARY=$(command -v terraform)
 IP="Unknown"
 
 echo $ID
@@ -46,27 +47,31 @@ help2() {
 
 help3() {
     echo -e "Required Software:"
-    echo -e "1) Terraform"
+    echo -e "1) Terraform (gcloud provider version 2.12.0)"
     echo -e "\tVisit: https://www.terraform.io/"
-    echo -e "2) Google Cloud SDK"
+    echo -e "2) Google Cloud SDK (version 246.0.0)"
     echo -e "\tVisit: https://cloud.google.com/sdk/"
     echo -e ""
     exit 1
 }
 
 auth() {
-    gcloud auth application-default login
-    gcloud service-management enable cloudapis.googleapis.com
-    gcloud service-management enable compute.googleapis.com
+    gcloud auth login
+    echo "Enabling cloud apis ..."
+    gcloud services enable cloudapis.googleapis.com
+    echo "Enabling compute apis ..."
+    gcloud services enable compute.googleapis.com
 }
 
 create() {
     rm -rf configuration
+    terraform init terraform
     terraform apply -var-file=config/config.tfvars terraform
     IP=$(terraform output ip)
 }
 
 destroy() {
+    terraform init terraform
     terraform destroy -var-file=config/config.tfvars terraform
 }
 
@@ -75,6 +80,7 @@ destroy() {
 [[ -z $ID ]] && help2
 [[ -z $GBINARY ]] && help3
 [[ -z $TBINARY ]] && help3
+[[ -z $GBINARY_VERSION ]] && help3
 
 # Set the project ID
 gcloud config set project "$ID"
